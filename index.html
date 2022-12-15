@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Call json PlaceHolder</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="Container">
+        <div id="users">
+            <h1>All Users</h1>
+            <ul id="user">
+
+            </ul>
+        </div>
+
+        
+        <div id="posts">
+            <h1>User Posts </h1>
+            <ul id="post">
+
+            </ul>
+        </div>
+    </div>
+
+    <script>
+
+    var ids = 1;
+       
+        
+        function chowposts(id){
+
+           
+
+            ids = id
+
+           
+            // let user =  document.getElementById("user")
+            // user.innerHTML =""
+            // getUsers()
+            let post =  document.getElementById("post")
+
+            post.innerHTML = ""
+
+            let request = new XMLHttpRequest()
+            request.open("GET","https://jsonplaceholder.typicode.com/posts?userId="+id)
+            request.responseType = "json"
+            request.send()
+            request.onload = function(){
+            let data = request.response
+            for(let i = 0 ; i < data.length ; i++){
+                // console.log(data[i].title)
+            post.innerHTML += `
+                
+                <li>
+                    
+                    <h2 class='title' >${i+1}) ${data[i].title}</h2>
+                    <p class='body' >${data[i].body}</p>
+                    
+                    </li>
+                `
+            }
+            
+            
+            }
+
+
+            // console.log(ids)
+            }
+
+        function getUsers(){
+
+            let request = new XMLHttpRequest()
+            request.open("GET","https://jsonplaceholder.typicode.com/users")
+            request.responseType = "json"
+            request.send()
+            request.onload = function(){
+                let data =  request.response
+                // console.log(data)
+                document.getElementById("user").innerHTML = ""
+                for(let i =0 ; i <data.length ; i++){
+                    // console.log(data[i].name)
+                    
+                    document.getElementById("user").innerHTML += `
+                        <li class='${ids == data[i].id ?'liuser' : 'notliuser'}'  onclick="userClik(${data[i].id},this)">
+                           <h3>${data[i].name}</h3>  
+                           <p>${data[i].email}</p>   
+                        </li>
+                    `
+                   
+                }
+                
+            }
+            console.log(ids)
+        }
+        chowposts(1)
+        getUsers()
+     
+
+        function userClik(id,el){
+            chowposts(id)
+            console.log(el)
+           
+            let selected = document.getElementsByClassName("selected")
+            for( select of selected){
+                select.classList.remove("selected")
+            }
+            el.classList.add("selected")
+        }
+       
+    
+       
+      
+       
+    </script>
+</body>
+</html>
